@@ -4,7 +4,7 @@
     <select id="findTagsByArticleId" resultType="com.mszl.blog_api.dao.pojo.Tag" parameterType="java.lang.Long">
         select id,avatar,tag_name as tagName from ms_tag
         where id in
-        (select tag_id from ms_article_tag where article_id = #{articleId})
+              (select tag_id from ms_article_tag where article_id = #{articleId})
     </select>
     <select id="findHotsTagId" resultType="java.lang.Long" parameterType="java.lang.Integer">
         select tag_id from ms_tag mt group by tag_id order by count(*) desc limit #{limit}

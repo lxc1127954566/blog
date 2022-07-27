@@ -2,6 +2,7 @@ package com.mszl.blog_api.service.serviceImp;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.mszl.blog_api.dao.dos.Archives;
 import com.mszl.blog_api.dao.mapper.ArticleMapper;
 import com.mszl.blog_api.dao.pojo.Article;
 import com.mszl.blog_api.service.ArticleService;
@@ -23,8 +24,10 @@ public class ArticleServiceImp implements ArticleService {
 
     @Autowired
     private ArticleMapper articleMapper;
+
     @Autowired
     private TagService tagService;
+
     @Autowired
     private SysUserService sysUserService;
 
@@ -50,10 +53,28 @@ public class ArticleServiceImp implements ArticleService {
         LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByDesc(Article::getViewCounts);
         queryWrapper.select(Article::getId,Article::getTitle);
-        queryWrapper.last("limit"+limit);
+        queryWrapper.last("limit "+limit);
         //select id, title from article order by view_counts desc limit 5
         List<Article> articles = articleMapper.selectList(queryWrapper);
         return Result.success(copyList(articles,false,false));
+    }
+
+    @Override
+    public Result newArticles(int limit) {
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByDesc(Article::getCreateDate);
+        queryWrapper.select(Article::getId,Article::getTitle);
+        queryWrapper.last("limit "+limit);
+        //select id, title from article order by create_date desc limit 5
+        List<Article> articles = articleMapper.selectList(queryWrapper);
+        return Result.success(copyList(articles,false,false));
+    }
+
+    @Override
+    public Result listArchives() {
+        List<Archives> articles = articleMapper.selectListArchives();
+        System.out.println(articles);
+        return Result.success(articles);
     }
 
     private List<ArticleVo> copyList(List<Article> records, boolean isTag, boolean isAuthor) {

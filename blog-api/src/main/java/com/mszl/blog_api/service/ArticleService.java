@@ -8,4 +8,8 @@ public interface ArticleService {
     Result listArticle(PagerParams pagerParams);
 
     Result hotArticles(int limit);
+
+    Result newArticles(int limit);
+
+    Result listArchives();
 }
