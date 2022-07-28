@@ -22,6 +22,6 @@ public class UploadController {
         //substringAfterLast("abcde","c") == "de"
         //唯一文件名称
         String fileName = UUID.randomUUID().toString() + "." + StringUtils.substringAfterLast(originalFilename,".");
-        return
+        return null;
     }
 }
