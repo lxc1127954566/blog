@@ -2,8 +2,11 @@ package com.mszl.blog_api.service;
 
 import com.mszl.blog_api.dao.pojo.SysUser;
 import com.mszl.blog_api.vo.Result;
+import com.mszl.blog_api.vo.UserVo;
 
 public interface SysUserService {
+
+    UserVo findUserVoById(Long authorId);
 
     SysUser findUserById(Long id);
 

@@ -7,7 +7,7 @@
               (select tag_id from ms_article_tag where article_id = #{articleId})
     </select>
     <select id="findHotsTagId" resultType="java.lang.Long" parameterType="java.lang.Integer">
-        select tag_id from ms_tag mt group by tag_id order by count(*) desc limit #{limit}
+        select tag_id from ms_article_tag mt group by tag_id order by count(*) desc limit #{limit}
     </select>
     <select id="findTagsByTagIds" resultType="com.mszl.blog_api.dao.pojo.Tag" parameterType="java.util.List">
         select id,tag_name as tagName from ms_tag

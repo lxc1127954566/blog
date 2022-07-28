@@ -13,19 +13,19 @@ public class ArticleVo {
 
     private String summary;
 
-    private int commentCounts;
+    private Integer commentCounts;
 
-    private int viewCounts;
+    private Integer viewCounts;
 
-    private int weight;
+    private Integer weight;
 
     private String createDate;
 
     private String author;
 
-/*    private ArticleBodyVo body;*/
+    private ArticleBodyVo body;
 
     private List<TagVo> tags;
 
-/*    private List<CategoryVo> categorys;*/
+    private CategoryVo category;
 }

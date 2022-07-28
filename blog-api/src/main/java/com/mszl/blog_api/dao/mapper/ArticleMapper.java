@@ -3,6 +3,7 @@ package com.mszl.blog_api.dao.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mszl.blog_api.dao.dos.Archives;
 import com.mszl.blog_api.dao.pojo.Article;
+import com.mszl.blog_api.dao.pojo.ArticleBody;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.mszl.blog_api;
+package com.mszl.blog_api.Utils;
 
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.JwtBuilder;
@@ -28,10 +28,10 @@ public class JWTUtils {
         return token;
     }
 
+    //解析token
     public static Map<String, Object> checkToken(String token){
         try {
             Jwt parse = Jwts.parser().setSigningKey(jwtToken).parse(token);
-            System.out.println((Map<String, Object>) parse.getBody());
             return (Map<String, Object>) parse.getBody();
         }catch (Exception e) {
             e.printStackTrace();

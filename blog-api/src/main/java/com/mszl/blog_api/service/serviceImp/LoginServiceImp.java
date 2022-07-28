@@ -2,8 +2,7 @@ package com.mszl.blog_api.service.serviceImp;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.mszl.blog_api.JWTUtils;
-import com.mszl.blog_api.dao.mapper.SysUserMapper;
+import com.mszl.blog_api.Utils.JWTUtils;
 import com.mszl.blog_api.dao.pojo.SysUser;
 import com.mszl.blog_api.service.LoginService;
 import com.mszl.blog_api.service.SysUserService;
@@ -42,7 +41,7 @@ public class LoginServiceImp implements LoginService {
     public Result login(LoginParams loginParams) {
         String account = loginParams.getAccount();
         String password = loginParams.getPassword();
-        if (StringUtils.isBlank(account )|| StringUtils.isBlank(password)){
+        if (StringUtils.isBlank(account)|| StringUtils.isBlank(password)){
             return Result.fail(ErrorCode.PARAMS_ERROR.getCode(),ErrorCode.PARAMS_ERROR.getMsg());
         }
         password = DigestUtils.md5Hex(password + salt);

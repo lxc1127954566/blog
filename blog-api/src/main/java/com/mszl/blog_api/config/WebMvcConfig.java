@@ -1,11 +1,13 @@
 package com.mszl.blog_api.config;
 
-import com.mszl.blog_api.intercept.LoginInterceptor;
+import com.mszl.blog_api.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
@@ -20,6 +22,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/test");
+                .addPathPatterns("/test")
+                .addPathPatterns("/comments/create/change")
+                .addPathPatterns("/articles/issueArticle");
     }
 }

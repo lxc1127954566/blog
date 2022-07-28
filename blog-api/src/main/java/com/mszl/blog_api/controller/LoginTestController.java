@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("test")
 public class LoginTestController {
 
+
     @GetMapping
     public Result test(){
         return Result.success(null);
