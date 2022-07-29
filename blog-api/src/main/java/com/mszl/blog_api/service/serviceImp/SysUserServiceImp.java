@@ -28,21 +28,21 @@ public class SysUserServiceImp implements SysUserService {
     @Override
     public UserVo findUserVoById(Long authorId) {
         SysUser sysUser = sysUserMapper.selectById(authorId);
-        if (sysUser == null){
+        if (sysUser == null) {
             sysUser = new SysUser();
             sysUser.setId(1L);
             sysUser.setAvatar("static/lbxx.jpg");
             sysUser.setNickname("lxc");
         }
         UserVo userVo = new UserVo();
-        BeanUtils.copyProperties(sysUser,userVo);
+        BeanUtils.copyProperties(sysUser, userVo);
         return userVo;
     }
 
     @Override
     public SysUser findUserById(Long id) {
         SysUser sysUser = sysUserMapper.selectById(id);
-        if (sysUser == null){
+        if (sysUser == null) {
             sysUser = new SysUser();
             sysUser.setNickname("lxc");
         }
@@ -52,26 +52,25 @@ public class SysUserServiceImp implements SysUserService {
     @Override
     public SysUser findUser(String account, String password) {
         LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(SysUser::getAccount,account);
-        queryWrapper.eq(SysUser::getPassword,password);
-        queryWrapper.select(SysUser::getAccount,SysUser::getPassword,SysUser::getNickname,SysUser::getId);
+        queryWrapper.eq(SysUser::getAccount, account);
+        queryWrapper.eq(SysUser::getPassword, password);
+        queryWrapper.select(SysUser::getAccount, SysUser::getPassword, SysUser::getNickname, SysUser::getId);
         queryWrapper.last("limit 1");
         return sysUserMapper.selectOne(queryWrapper);
     }
 
 
-
     /**
      * 1、校验token合法性
-     *  是否为空，解析是否成功，redis是否存在
+     * 是否为空，解析是否成功，redis是否存在
      * 2、校验失败，返回错误
      * 3、校验成功，返回结果LoginUserVo
-     * */
+     */
     @Override
     public Result findUserByToken(String token) {
         SysUser sysUser = loginService.checkToken(token);
-        if (sysUser == null){
-            return Result.fail(ErrorCode.TOKEN_ERROR.getCode(), ErrorCode.TOKEN_ERROR.getMsg());
+        if (sysUser == null) {
+            return Result.fail(ErrorCode.TOKEN_ERROR.getCode(), "用户未登录");
         }
         LoginUserVo loginUserVo = new LoginUserVo();
         loginUserVo.setId(sysUser.getId());
@@ -84,7 +83,7 @@ public class SysUserServiceImp implements SysUserService {
     @Override
     public SysUser findByAccount(String account) {
         LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(SysUser::getAccount,account);
+        queryWrapper.eq(SysUser::getAccount, account);
         queryWrapper.last("limit 1");
         return this.sysUserMapper.selectOne(queryWrapper);
     }

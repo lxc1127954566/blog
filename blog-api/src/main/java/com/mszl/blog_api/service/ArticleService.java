@@ -6,15 +6,13 @@ import com.mszl.blog_api.vo.params.PagerParams;
 
 public interface ArticleService {
 
-    Result listArticle(PagerParams pagerParams);
-
     Result hotArticles(int limit);
 
     Result newArticles(int limit);
 
-    Result listArchives();
-
     Result findArticleById(Long articleId);
 
     Result issueArticle(ArticleParam articleParam);
+
+    Result listArticle(PagerParams pagerParams);
 }

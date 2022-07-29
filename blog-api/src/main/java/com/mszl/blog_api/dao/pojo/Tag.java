@@ -10,4 +10,6 @@ public class Tag {
     private String avatar;
 
     private String tagName;
+
+    private String description;
 }

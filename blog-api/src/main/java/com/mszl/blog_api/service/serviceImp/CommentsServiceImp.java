@@ -31,13 +31,13 @@ public class CommentsServiceImp implements CommentsService {
      * 1、根据文章id 查询评论列表 从comments表中查询
      * 2、根据作者id 查询作者信息
      * 3、level = 1 查询子评论
-     *  有就查询查子评论
-     * */
+     * 有就查询查子评论
+     */
     @Override
     public Result commentsByArticleId(Long id) {
         LambdaQueryWrapper<Comments> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Comments::getId,id);
-        queryWrapper.eq(Comments::getLevel,1);
+        queryWrapper.eq(Comments::getId, id);
+        queryWrapper.eq(Comments::getLevel, 1);
         List<Comments> comments = commentsMapper.selectList(queryWrapper);
         List<CommentVo> commentVos = copyList(comments);
         return Result.success(commentVos);
@@ -52,21 +52,21 @@ public class CommentsServiceImp implements CommentsService {
         comments.setContent(commentParam.getContent());
         comments.setCreateDate(System.currentTimeMillis());
         Long parent = commentParam.getParent();
-        if (parent == null || parent == 0 ){
+        if (parent == null || parent == 0) {
             comments.setLevel(1);
-        }else {
+        } else {
             comments.setLevel(2);
         }
         comments.setParentId(parent == null ? 0 : parent);
         Long toUserId = commentParam.getToUserId();
-        comments.setToUid(toUserId == null ? 0 :toUserId);
+        comments.setToUid(toUserId == null ? 0 : toUserId);
         this.commentsMapper.insert(comments);
         return Result.success(null);
     }
 
     private List<CommentVo> copyList(List<Comments> comments) {
         List<CommentVo> commentVos = new ArrayList<>();
-        for (Comments comment : comments){
+        for (Comments comment : comments) {
             commentVos.add(copy(comment));
         }
         return commentVos;
@@ -74,19 +74,19 @@ public class CommentsServiceImp implements CommentsService {
 
     private CommentVo copy(Comments comment) {
         CommentVo commentVo = new CommentVo();
-        BeanUtils.copyProperties(comment,commentVo);
+        BeanUtils.copyProperties(comment, commentVo);
         Long authorId = comment.getAuthorId();
         UserVo userVo = sysUserService.findUserVoById(authorId);
         commentVo.setAuthor(userVo);
         //子评论
         Integer level = commentVo.getLevel();
-        if (level == 1){
+        if (level == 1) {
             Long id = comment.getId();
             List<CommentVo> commentVos = findCommentsByParentId(id);
             commentVo.setChildren(commentVos);
         }
         //to User
-        if (level > 1){
+        if (level > 1) {
             Long toUid = comment.getToUid();
             UserVo toUserVo = this.sysUserService.findUserVoById(toUid);
             commentVo.setToUser(toUserVo);
@@ -96,8 +96,8 @@ public class CommentsServiceImp implements CommentsService {
 
     private List<CommentVo> findCommentsByParentId(Long id) {
         LambdaQueryWrapper<Comments> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(Comments::getParentId,id);
-        queryWrapper.eq(Comments::getLevel,2);
+        queryWrapper.eq(Comments::getParentId, id);
+        queryWrapper.eq(Comments::getLevel, 2);
         return copyList(commentsMapper.selectList(queryWrapper));
     }
 }

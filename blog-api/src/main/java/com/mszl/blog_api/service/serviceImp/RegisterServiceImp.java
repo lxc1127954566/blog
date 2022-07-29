@@ -35,30 +35,30 @@ public class RegisterServiceImp implements RegisterService {
      * 3、生成token
      * 4、存入redis 并返回
      * 5、加上事务 失败则回滚
-     * */
+     */
     @Override
     public Result register(LoginParams loginParams) {
         String account = loginParams.getAccount();
         String password = loginParams.getPassword();
         String nickname = loginParams.getNickname();
-        if (StringUtils.isBlank(account) || StringUtils.isBlank(password) || StringUtils.isBlank(nickname)){
+        if (StringUtils.isBlank(account) || StringUtils.isBlank(password) || StringUtils.isBlank(nickname)) {
             return Result.fail(ErrorCode.PARAMS_ERROR.getCode(), ErrorCode.PARAMS_ERROR.getMsg());
         }
         SysUser sysUser = sysUserService.findByAccount(account);
-        if (sysUser != null){
+        if (sysUser != null) {
             return Result.fail(ErrorCode.ACCOUNT_EXIST.getCode(), ErrorCode.ACCOUNT_EXIST.getMsg());
         }
         sysUser = new SysUser();
         sysUser.setNickname(nickname);
         sysUser.setAccount(account);
-        sysUser.setPassword(DigestUtils.md5Hex(password+salt));
+        sysUser.setPassword(DigestUtils.md5Hex(password + salt));
         sysUser.setCreateDate(System.currentTimeMillis());
         sysUser.setLastLogin(sysUser.getLastLogin());
         sysUser.setSalt(salt);
         this.sysUserService.save(sysUser);
 
         String token = JWTUtils.createToken(sysUser.getId());
-        redisTemplate.opsForValue().set("TOKEN_"+token, JSON.toJSONString(sysUser),1, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set("TOKEN_" + token, JSON.toJSONString(sysUser), 1, TimeUnit.DAYS);
         return Result.success(token);
     }
 }

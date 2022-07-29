@@ -30,11 +30,11 @@ public class TagServiceImp implements TagService {
 
     /**
      * 1、标签所拥有的文章数最多
-     * */
+     */
     @Override
     public Result hots(int limit) {
         List<Long> tagIds = tagMapper.findHotsTagId(limit);
-        if (CollectionUtils.isEmpty(tagIds)){
+        if (CollectionUtils.isEmpty(tagIds)) {
             return Result.success(Collections.emptyList());
         }
         List<Tag> tagList = tagMapper.findTagsByTagIds(tagIds);
@@ -43,19 +43,34 @@ public class TagServiceImp implements TagService {
 
     @Override
     public Result findTagsList() {
-        List<Tag> tags = tagMapper.selectList(new LambdaQueryWrapper<>());
+        LambdaQueryWrapper<Tag> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.select(Tag::getId, Tag::getTagName);
+        List<Tag> tags = tagMapper.selectList(queryWrapper);
         return Result.success(copyList(tags));
     }
 
-    public TagVo copy(Tag tag){
+    @Override
+    public Result findTagsDetailList() {
+        LambdaQueryWrapper<Tag> queryWrapper = new LambdaQueryWrapper<>();
+        List<Tag> tags = tagMapper.selectList(queryWrapper);
+        return Result.success(copyList(tags));
+    }
+
+    @Override
+    public Result findTagsDetailById(Long tagId) {
+        Tag tag = tagMapper.selectById(tagId);
+        return Result.success(copy(tag));
+    }
+
+    public TagVo copy(Tag tag) {
         TagVo tagVo = new TagVo();
-        BeanUtils.copyProperties(tag,tagVo);
+        BeanUtils.copyProperties(tag, tagVo);
         return tagVo;
     }
 
-    public List<TagVo> copyList(List<Tag> tagList){
+    public List<TagVo> copyList(List<Tag> tagList) {
         List<TagVo> tagVos = new ArrayList<>();
-        for (Tag tag : tagList){
+        for (Tag tag : tagList) {
             tagVos.add(copy(tag));
         }
         return tagVos;

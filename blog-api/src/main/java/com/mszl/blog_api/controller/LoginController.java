@@ -1,6 +1,7 @@
 package com.mszl.blog_api.controller;
 
 
+import com.mszl.blog_api.aop.LogAnnotation;
 import com.mszl.blog_api.service.LoginService;
 import com.mszl.blog_api.vo.Result;
 import com.mszl.blog_api.vo.params.LoginParams;
@@ -9,7 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@Api(value = "登录控制台", tags = { "登录接口" })
+@Api(value = "登录控制台", tags = {"登录接口"})
 @RestController
 @RequestMapping("login")
 public class LoginController {
@@ -19,7 +20,8 @@ public class LoginController {
 
     @ApiOperation(value = "登录接口")
     @PostMapping
-    public Result login(@RequestBody LoginParams loginParams){
+    @LogAnnotation(module = "登录", operation = "用户登录")
+    public Result login(@RequestBody LoginParams loginParams) {
         return loginService.login(loginParams);
 
     }

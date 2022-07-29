@@ -8,5 +8,11 @@ public interface CategoryService{
 
     CategoryVo findCategoryById(Long categoryId);
 
+    Result findCategoryDetailById(Long categoryId);
+
     Result findCategoryList();
+
+    Result findCategoryDetailList();
+
+
 }
